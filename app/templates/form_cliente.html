@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{% if cliente %}Editar Cliente{% else %}Novo Cliente{% endif %}{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>{% if cliente %}✏️ Editar Cliente{% else %}➕ Novo Cliente{% endif %}</h1>
+  <a href="/clientes" class="btn btn-secondary">← Voltar</a>
+</div>
+
+<div class="card" style="max-width:600px;">
+  <form method="POST">
+    <div class="form-group">
+      <label>Nome completo *</label>
+      <input type="text" name="nome" value="{{ cliente.nome if cliente else '' }}" required placeholder="Ex: João da Silva">
+    </div>
+    <div class="form-group">
+      <label>Telefone / WhatsApp</label>
+      <input type="text" name="telefone" value="{{ cliente.telefone if cliente else '' }}" placeholder="(47) 99999-0000">
+    </div>
+    <div class="form-group">
+      <label>Endereço de entrega *</label>
+      <textarea name="endereco" required placeholder="Rua, número, bairro, cidade, complemento…">{{ cliente.endereco if cliente else '' }}</textarea>
+    </div>
+    <div style="display:flex; gap:.75rem; margin-top:1.5rem;">
+      <button type="submit" class="btn btn-primary">{% if cliente %}Salvar{% else %}Cadastrar{% endif %}</button>
+      <a href="/clientes" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

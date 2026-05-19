@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{% if produto %}Editar Produto{% else %}Novo Produto{% endif %}{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>{% if produto %}✏️ Editar Produto{% else %}➕ Novo Produto{% endif %}</h1>
+  <a href="/produtos" class="btn btn-secondary">← Voltar</a>
+</div>
+
+<div class="card" style="max-width:600px;">
+  <form method="POST">
+    <div class="form-group">
+      <label>Nome do produto *</label>
+      <input type="text" name="nome" value="{{ produto.nome if produto else '' }}" required placeholder="Ex: X-Burguer Clássico">
+    </div>
+    <div class="form-group">
+      <label>Descrição</label>
+      <textarea name="descricao" placeholder="Ingredientes, tamanho, detalhes…">{{ produto.descricao if produto else '' }}</textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Preço (R$) *</label>
+        <input type="number" name="preco" step="0.01" min="0" value="{{ produto.preco if produto else '' }}" required placeholder="0,00">
+      </div>
+      <div class="form-group">
+        <label>Categoria</label>
+        <select name="categoria">
+          <option value="">Selecione…</option>
+          {% for cat in ['Lanches','Pizzas','Salgados','Massas','Acompanhamentos','Bebidas','Sobremesas','Outros'] %}
+            <option value="{{ cat }}" {% if produto and produto.categoria == cat %}selected{% endif %}>{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="check-row">
+        <input type="checkbox" name="disponivel" id="disponivel" {% if not produto or produto.disponivel %}checked{% endif %}>
+        <label for="disponivel" style="margin:0; color:var(--text);">Disponível no cardápio</label>
+      </div>
+    </div>
+    <div style="display:flex; gap:.75rem; margin-top:1.5rem;">
+      <button type="submit" class="btn btn-primary">{% if produto %}Salvar alterações{% else %}Cadastrar produto{% endif %}</button>
+      <a href="/produtos" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

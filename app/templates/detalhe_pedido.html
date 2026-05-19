@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Pedido #{{ pedido.id }}{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>📋 Pedido #{{ pedido.id }}</h1>
+  <a href="/pedidos" class="btn btn-secondary">← Voltar</a>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+  <div class="card">
+    <h2>👤 Cliente</h2>
+    <p><strong>{{ pedido.cliente_nome }}</strong></p>
+    <p style="color:var(--muted); font-size:.875rem; margin-top:.25rem;">📞 {{ pedido.telefone or 'Sem telefone' }}</p>
+    <p style="color:var(--muted); font-size:.875rem; margin-top:.25rem;">📍 {{ pedido.endereco }}</p>
+    {% if pedido.observacao %}
+    <div style="background:var(--surface2); border-radius:6px; padding:.75rem; margin-top:1rem; font-size:.875rem;">
+      <strong>Obs:</strong> {{ pedido.observacao }}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h2>📊 Status</h2>
+    <span class="badge badge-{{ pedido.status }}" style="font-size:.9rem; padding:.4rem 1rem;">
+      {% if pedido.status == 'recebido' %}🔵 Recebido
+      {% elif pedido.status == 'preparo' %}🟠 Em preparo
+      {% elif pedido.status == 'saiu' %}🟢 Saiu p/ entrega
+      {% elif pedido.status == 'entregue' %}✅ Entregue
+      {% elif pedido.status == 'cancelado' %}❌ Cancelado
+      {% else %}{{ pedido.status }}{% endif %}
+    </span>
+    <p style="color:var(--muted); font-size:.8rem; margin-top:.75rem;">
+      Criado em: {{ pedido.criado_em.strftime('%d/%m/%Y às %H:%M') if pedido.criado_em else '—' }}
+    </p>
+    {% if pedido.status not in ['entregue','cancelado'] %}
+    <form method="POST" action="/pedidos/status/{{ pedido.id }}" style="margin-top:1rem; display:flex; gap:.5rem;">
+      <select name="status" style="flex:1;">
+        <option value="preparo">Em preparo</option>
+        <option value="saiu">Saiu p/ entrega</option>
+        <option value="entregue">Entregue</option>
+        <option value="cancelado">Cancelar pedido</option>
+      </select>
+      <button class="btn btn-primary btn-sm">Atualizar</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card" style="margin-top:1.5rem;">
+  <h2>🛒 Itens do Pedido</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Qtd</th>
+          <th>Preço Unit.</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in itens %}
+        <tr>
+          <td>{{ item.produto_nome }}</td>
+          <td>{{ item.quantidade }}x</td>
+          <td>R$ {{ '%.2f'|format(item.preco_unit) }}</td>
+          <td><strong style="color:var(--accent2)">R$ {{ '%.2f'|format(item.quantidade * item.preco_unit) }}</strong></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" style="text-align:right; padding:.85rem 1rem; font-weight:600;">Total</td>
+          <td style="padding:.85rem 1rem;"><strong style="font-family:'Syne',sans-serif; font-size:1.2rem; color:var(--accent2)">R$ {{ '%.2f'|format(pedido.total) }}</strong></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+{% endblock %}

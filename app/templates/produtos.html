@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Cardápio{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>🍕 Cardápio</h1>
+  <a href="/produtos/novo" class="btn btn-primary">+ Novo Produto</a>
+</div>
+
+{% if produtos %}
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Categoria</th>
+          <th>Preço</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in produtos %}
+        <tr>
+          <td>
+            <strong>{{ p.nome }}</strong>
+            {% if p.descricao %}<br><small style="color:var(--muted)">{{ p.descricao[:60] }}{% if p.descricao|length > 60 %}…{% endif %}</small>{% endif %}
+          </td>
+          <td>{{ p.categoria or '—' }}</td>
+          <td><strong style="color:var(--accent2)">R$ {{ '%.2f'|format(p.preco) }}</strong></td>
+          <td>
+            {% if p.disponivel %}
+              <span class="badge badge-disponivel">Disponível</span>
+            {% else %}
+              <span class="badge badge-indisponivel">Indisponível</span>
+            {% endif %}
+          </td>
+          <td style="display:flex; gap:.5rem;">
+            <a href="/produtos/editar/{{ p.id }}" class="btn btn-secondary btn-sm">Editar</a>
+            <form method="POST" action="/produtos/deletar/{{ p.id }}" onsubmit="return confirm('Remover este produto?')">
+              <button type="submit" class="btn btn-danger btn-sm">Remover</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="empty card">
+  <div class="empty-icon">🍕</div>
+  <p>Nenhum produto cadastrado ainda.</p>
+  <br>
+  <a href="/produtos/novo" class="btn btn-primary">Cadastrar primeiro produto</a>
+</div>
+{% endif %}
+{% endblock %}

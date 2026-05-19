@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Pedidos{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>📋 Pedidos</h1>
+  <a href="/pedidos/novo" class="btn btn-primary">+ Novo Pedido</a>
+</div>
+
+{% if pedidos %}
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Pedido</th>
+          <th>Cliente</th>
+          <th>Status</th>
+          <th>Total</th>
+          <th>Data</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in pedidos %}
+        <tr>
+          <td><strong>#{{ p.id }}</strong></td>
+          <td>{{ p.cliente_nome }}</td>
+          <td>
+            <span class="badge badge-{{ p.status }}">
+              {% if p.status == 'recebido' %}🔵 Recebido
+              {% elif p.status == 'preparo' %}🟠 Em preparo
+              {% elif p.status == 'saiu' %}🟢 Saiu p/ entrega
+              {% elif p.status == 'entregue' %}✅ Entregue
+              {% elif p.status == 'cancelado' %}❌ Cancelado
+              {% else %}{{ p.status }}{% endif %}
+            </span>
+          </td>
+          <td><strong style="color:var(--accent2)">R$ {{ '%.2f'|format(p.total) }}</strong></td>
+          <td style="color:var(--muted); font-size:.8rem;">
+            {{ p.criado_em.strftime('%d/%m %H:%M') if p.criado_em else '—' }}
+          </td>
+          <td style="display:flex; gap:.4rem; flex-wrap:wrap;">
+            <a href="/pedidos/detalhe/{{ p.id }}" class="btn btn-secondary btn-sm">Detalhe</a>
+            {% if p.status not in ['entregue','cancelado'] %}
+            <form method="POST" action="/pedidos/status/{{ p.id }}" style="display:inline;">
+              <select name="status" onchange="this.form.submit()" style="width:auto; padding:.3rem .5rem; font-size:.78rem;">
+                <option disabled selected>Alterar…</option>
+                <option value="preparo">Em preparo</option>
+                <option value="saiu">Saiu p/ entrega</option>
+                <option value="entregue">Entregue</option>
+                <option value="cancelado">Cancelar</option>
+              </select>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="empty card">
+  <div class="empty-icon">📋</div>
+  <p>Nenhum pedido ainda. <a href="/pedidos/novo" class="btn btn-primary btn-sm" style="margin-left:.5rem;">Criar primeiro pedido</a></p>
+</div>
+{% endif %}
+{% endblock %}

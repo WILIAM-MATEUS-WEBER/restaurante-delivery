@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>🍔 Bem-vindo ao RestaurantOS</h1>
+<p style="color:var(--muted); margin-bottom:2rem;">Sistema de gerenciamento para restaurante com delivery.</p>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-value stat-accent">🛒</div>
+    <div class="stat-label">Faça seu primeiro pedido</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value stat-green">✓</div>
+    <div class="stat-label">Banco de dados conectado</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value stat-blue">🚀</div>
+    <div class="stat-label">Pronto para Docker</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value stat-yellow">📦</div>
+    <div class="stat-label">Persistência com volumes</div>
+  </div>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem;">
+  <a href="/produtos" class="card" style="text-decoration:none; display:block; transition:border-color .2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+    <div style="font-size:2rem; margin-bottom:.75rem;">🍕</div>
+    <h2>Cardápio</h2>
+    <p style="color:var(--muted); font-size:.875rem;">Cadastre e gerencie os produtos do restaurante por categoria.</p>
+  </a>
+  <a href="/clientes" class="card" style="text-decoration:none; display:block; transition:border-color .2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+    <div style="font-size:2rem; margin-bottom:.75rem;">👤</div>
+    <h2>Clientes</h2>
+    <p style="color:var(--muted); font-size:.875rem;">Gerencie a base de clientes com endereço para entrega.</p>
+  </a>
+  <a href="/pedidos" class="card" style="text-decoration:none; display:block; transition:border-color .2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+    <div style="font-size:2rem; margin-bottom:.75rem;">📋</div>
+    <h2>Pedidos</h2>
+    <p style="color:var(--muted); font-size:.875rem;">Crie e acompanhe pedidos do recebimento até a entrega.</p>
+  </a>
+</div>
+{% endblock %}

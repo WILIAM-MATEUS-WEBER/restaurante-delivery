@@ -1,0 +1,63 @@
+version: "3.9"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# RestaurantOS — Docker Compose
+# Autor: Wiliam Mateus Weber
+# Tema:  Infraestrutura para Restaurante com Delivery
+# ──────────────────────────────────────────────────────────────────────────────
+
+networks:
+  restaurante-net:
+    driver: bridge
+
+volumes:
+  postgres-data:          # Volume nomeado — dados persistem após reinicialização
+    driver: local
+
+services:
+
+  # ── 1. Banco de Dados (PostgreSQL) ─────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: restaurante-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       ${DB_NAME:-restaurante}
+      POSTGRES_USER:     ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data   # Persistência obrigatória
+    networks:
+      - restaurante-net
+    ports:
+      - "${DB_PORT_EXPOSE:-5432}:5432"           # Expõe p/ acesso externo (opcional)
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-restaurante}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── 2. Aplicação (Flask) ───────────────────────────────────────────────────
+  app:
+    build:
+      context: ./app
+      dockerfile: ../Dockerfile
+    container_name: restaurante-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy          # Aguarda o banco estar pronto
+    environment:
+      DB_HOST:     db                       # Nome do serviço = hostname na rede
+      DB_PORT:     5432
+      DB_NAME:     ${DB_NAME:-restaurante}
+      DB_USER:     ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      SECRET_KEY:  ${SECRET_KEY:-troque-em-producao}
+      FLASK_DEBUG: ${FLASK_DEBUG:-false}
+    networks:
+      - restaurante-net
+    ports:
+      - "${APP_PORT:-5000}:5000"
+    volumes:
+      - ./app:/app                          # Hot-reload em desenvolvimento
