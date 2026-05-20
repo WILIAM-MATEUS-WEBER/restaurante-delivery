@@ -1,4 +1,4 @@
-# 🍔 RestaurantOS — Sistema de Restaurante com Delivery
+# RestaurantOS — Sistema de Restaurante com Delivery
 
 **Autor:** Wiliam Mateus Weber  
 **Tema:** Infraestrutura para um Restaurante com Delivery  
@@ -6,7 +6,7 @@
 
 ---
 
-## 📖 Descrição
+## Descrição
 
 O **RestaurantOS** é uma aplicação web para gerenciamento de restaurante com delivery. Permite cadastrar produtos (cardápio), gerenciar clientes, criar pedidos com múltiplos itens e acompanhar o status de cada entrega em tempo real.
 
@@ -14,7 +14,7 @@ A aplicação foi desenvolvida para demonstrar um ambiente containerizado com Do
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 | Camada | Tecnologia |
 |--------|-----------|
@@ -28,7 +28,7 @@ A aplicação foi desenvolvida para demonstrar um ambiente containerizado com Do
 
 ---
 
-## 🏗 Arquitetura
+## Arquitetura
 
 ```
 ┌─────────────────────────────────────────────┐
@@ -52,11 +52,11 @@ A aplicação foi desenvolvida para demonstrar um ambiente containerizado com Do
 
 ---
 
-## ⚡ Instruções de Execução
+## Instruções de Execução
 
 ### Pré-requisitos
-- Docker >= 24
-- Docker Compose >= 2.20
+- Docker 
+- Docker Compose 
 
 ### 1. Clonar o repositório
 ```bash
@@ -86,7 +86,7 @@ curl http://localhost:5000/health
 
 ---
 
-## 📋 Comandos Úteis
+## Comandos Úteis
 
 ```bash
 # Subir em background
@@ -128,7 +128,7 @@ docker exec -it restaurante-db psql -U postgres -d restaurante
 
 ---
 
-## 🌍 Variáveis de Ambiente
+## Variáveis de Ambiente
 
 | Variável | Padrão | Descrição |
 |----------|--------|-----------|
@@ -143,7 +143,7 @@ docker exec -it restaurante-db psql -U postgres -d restaurante
 
 ---
 
-## 🗄 Banco de Dados
+## Banco de Dados
 
 O banco é inicializado automaticamente na primeira execução com as tabelas:
 
@@ -156,7 +156,7 @@ Dados de exemplo são inseridos automaticamente para facilitar testes.
 
 ---
 
-## 🌐 API REST
+## API REST
 
 | Endpoint | Método | Descrição |
 |----------|--------|-----------|
@@ -166,7 +166,7 @@ Dados de exemplo são inseridos automaticamente para facilitar testes.
 
 ---
 
-## 🐳 Docker Compose — Explicação
+## Docker Compose — Explicação
 
 O `docker-compose.yml` define:
 
@@ -177,7 +177,7 @@ O `docker-compose.yml` define:
 
 ---
 
-## 📦 DockerHub
+## DockerHub
 
 Imagem pública disponível em:
 
@@ -195,7 +195,7 @@ docker push <usuario>/restaurante-delivery:latest
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 projeto/
@@ -221,19 +221,6 @@ projeto/
 
 ---
 
-## 📸 Evidências
+## Evidências
 
-A pasta `evidencias/` deve conter prints das etapas (capturar da sua máquina):
-
-- `01-app-local.png` — Aplicação rodando localmente
-- `02-docker-build.png` — Saída do `docker build`
-- `03-docker-images.png` — Saída do `docker images`
-- `04-compose-up.png` — Saída do `docker compose up`
-- `05-docker-ps.png` — Saída do `docker ps`
-- `06-app-conectada-db.png` — Aplicação conectada ao banco
-- `07-cadastro-consulta.png` — Cadastro e consulta funcionando
-- `08-volume-ls.png` — Saída do `docker volume ls`
-- `09-persistencia.png` — Dados persistindo após reinicialização
-- `10-docker-login.png` — Login no DockerHub
-- `11-docker-push.png` — Push da imagem
-- `12-dockerhub-pagina.png` — Página pública da imagem no DockerHub
+A pasta `evidencias/` contem prints das etapas:
