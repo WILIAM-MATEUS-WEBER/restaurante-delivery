@@ -223,4 +223,5 @@ projeto/
 
 ## Evidências
 
-A pasta `evidencias/` contem prints das etapas:
+A pasta evidencias/ contém todos os prints das etapas de desenvolvimento local, execução na AWS (EC2), comunicação de containers, persistência em volumes, 
+build da imagem e push para o repositório público no DockerHub.
